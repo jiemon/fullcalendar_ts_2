@@ -1,14 +1,14 @@
 import { isArraysEqual } from '../util/array'
 
 export interface MemoizedRendering<ArgsType extends any[]> {
-  (...args: ArgsType): void
+  (...args: ArgsType[]): void
   unrender: () => void
   dependents: MemoizedRendering<any>[]
 }
 
 export function memoizeRendering<ArgsType extends any[]>(
-  renderFunc: (...args: ArgsType) => void,
-  unrenderFunc?: (...args: ArgsType) => void,
+  renderFunc: (...args: ArgsType[]) => void,
+  unrenderFunc?: (...args: ArgsType[]) => void,
   dependencies: MemoizedRendering<any>[] = []
 ): MemoizedRendering<ArgsType> {
 

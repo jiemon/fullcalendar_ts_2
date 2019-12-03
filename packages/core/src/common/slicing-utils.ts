@@ -31,7 +31,7 @@ export interface SlicedProps<SegType extends Seg> {
   eventSelection: string
 }
 
-export default abstract class Slicer<SegType extends Seg, ExtraArgs extends any[] = []> {
+export default abstract class Slicer<SegType extends Seg, ExtraArgs extends any[] = any[]> {
 
   private sliceBusinessHours = memoize(this._sliceBusinessHours)
   private sliceDateSelection = memoize(this._sliceDateSpan)
@@ -39,7 +39,7 @@ export default abstract class Slicer<SegType extends Seg, ExtraArgs extends any[
   private sliceEventDrag = memoize(this._sliceInteraction)
   private sliceEventResize = memoize(this._sliceInteraction)
 
-  abstract sliceRange(dateRange: DateRange, ...extraArgs: ExtraArgs): SegType[]
+  abstract sliceRange(dateRange: DateRange, ...extraArgs: ExtraArgs[]): SegType[]
 
   sliceProps(
     props: SliceableProps,
@@ -47,7 +47,7 @@ export default abstract class Slicer<SegType extends Seg, ExtraArgs extends any[
     nextDayThreshold: Duration | null,
     calendar: Calendar,
     component: DateComponent<any>, // TODO: kill
-    ...extraArgs: ExtraArgs
+    ...extraArgs: ExtraArgs[]
   ): SlicedProps<SegType> {
     let { eventUiBases } = props
     let eventSegs = this.sliceEventStore(props.eventStore, eventUiBases, dateProfile, nextDayThreshold, component, ...extraArgs)
@@ -66,7 +66,7 @@ export default abstract class Slicer<SegType extends Seg, ExtraArgs extends any[
   sliceNowDate( // does not memoize
     date: DateMarker,
     component: DateComponent<any>, // TODO: kill
-    ...extraArgs: ExtraArgs
+    ...extraArgs: ExtraArgs[]
   ): SegType[] {
     return this._sliceDateSpan(
       { range: { start: date, end: addMs(date, 1) }, allDay: false }, // add 1 ms, protect against null range
